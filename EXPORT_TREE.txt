@@ -1,0 +1,39 @@
+Folder PATH listing
+Volume serial number is C0EC-C6ED
+C:\USERS\TALAT\ONEDRIVE - THE PENNSYLVANIA STATE UNIVERSITY\DOCUMENTS\FPLFORM-CLONE\EXPORT_V2
+?   .gitignore
+?   README_V2.md
+?   render.yaml
+?   
++---backend
+?   ?   fpl_client.py
+?   ?   leagues.py
+?   ?   league_client.py
+?   ?   main.py
+?   ?   model.py
+?   ?   prediction.py
+?   ?   requirements.txt
+?   ?   standings_fallback.json
+?   ?   __init__.py
+?   ?   
+?   +---services
+?       ?   __init__.py
+?       ?   
+?       +---providers
+?               apifootball_provider.py
+?               football_provider.py
+?               __init__.py
+?               
++---frontend
+    ?   .env.example
+    ?   .env.production
+    ?   index.html
+    ?   package-lock.json
+    ?   package.json
+    ?   vite.config.js
+    ?   
+    +---src
+            App.jsx
+            main.jsx
+            styles.css
+            
