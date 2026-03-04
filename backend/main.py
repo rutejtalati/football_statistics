@@ -1160,3 +1160,11 @@ def debug_env():
         "key_prefix": key[:6],
         "key_suffix": key[-4:],
     }
+@app.get("/api/debug/key")
+def debug_key():
+    import os
+    key = os.getenv("APIFOOTBALL_API_KEY")
+    return {
+        "key_loaded": bool(key),
+        "key_length": len(key) if key else 0
+    }

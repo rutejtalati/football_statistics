@@ -25,19 +25,18 @@ class ApiFootballProvider:
     }
 
     def __init__(self):
-        self.api_key = os.getenv("APIFOOTBALL_API_KEY")
+        self.rapidapi_key = os.getenv("RAPIDAPI_KEY")
+        self.apifootball_key = os.getenv("APIFOOTBALL_API_KEY")
         print(
-            "[ApiFootballProvider] api_key_present=",
-            bool(self.api_key),
-            "len=",
-            len(self.api_key or ""),
-            "prefix=",
-            (self.api_key or "")[:6],
-            "suffix=",
-            (self.api_key or "")[-4:],
+            "[API Provider] RapidAPI key present:",
+            bool(self.rapidapi_key),
+            "API-Sports key present:",
+            bool(self.apifootball_key),
         )
-        if not self.api_key:
-            raise RuntimeError("APIFOOTBALL_API_KEY environment variable not set")
+        if not self.rapidapi_key and not self.apifootball_key:
+            raise RuntimeError(
+                "Either RAPIDAPI_KEY or APIFOOTBALL_API_KEY must be set in environment variables"
+            )
         self.base_url = self.BASE_URL
         self.season = self._configured_or_inferred_season()
         self.standings_ttl_seconds = int(os.getenv("APIFOOTBALL_STANDINGS_TTL_SECONDS", "1800"))
@@ -59,9 +58,11 @@ class ApiFootballProvider:
         self._logger = logging.getLogger(__name__)
 
     def _api_key(self) -> str:
-        key = (self.api_key or "").strip()
+        key = (self.rapidapi_key or self.apifootball_key or "").strip()
         if not key:
-            raise RuntimeError("APIFOOTBALL_API_KEY environment variable not set")
+            raise RuntimeError(
+                "Either RAPIDAPI_KEY or APIFOOTBALL_API_KEY must be set in environment variables"
+            )
         return key
 
     def _league_id(self, code: str) -> int:
@@ -71,8 +72,15 @@ class ApiFootballProvider:
         return league_id
 
     def _headers(self) -> Dict[str, str]:
+        if self.rapidapi_key:
+            return {
+                "x-rapidapi-key": self.rapidapi_key.strip(),
+                "x-rapidapi-host": "v3.football.api-sports.io",
+                "Accept": "application/json",
+            }
+
         return {
-            "x-apisports-key": self.api_key,
+            "x-apisports-key": self.apifootball_key.strip(),
             "Accept": "application/json",
         }
 
